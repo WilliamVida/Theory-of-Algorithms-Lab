@@ -3,7 +3,7 @@
 void bin_print(int i)
 {
     // Number of bits in an integer.
-    int j = sizeof(int) * 8;
+    int j = sizeof(unsigned int) * 8;
 
     // Temporary variable.
     int k;
@@ -21,47 +21,31 @@ void bin_print(int i)
 // Standard main signature.
 int main(int argc, char *argv[])
 {
-    // int i = 0xF1; // 11110001
-
-    // printf("Dec: %d\n", i);
-    // printf("Hex: %X\n", i);
-
-    // printf("Size of i: %d\n", sizeof(i));
-    // printf("Size of int: %d\n", sizeof(int));
-    // printf("Size of char: %d\n", sizeof(char));
-
-    // char c = 41;
-    // printf("c in char is: %c\n", c);
-    // printf("c in int is: %d\n", c);
-
-    // int j = 1000000000;
-    // printf("j in int is: %d\n", j);
-    // printf("j in char is: %c\n", (char)j);
-    // printf("j in int from char is: %d\n", (int)(char)j);
-
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     printf("1");
-    // }
-
-    // printf("\n");
-
     // Set i to a literal value.
-    int i = 0xf1; // 0xf1; // 241
+    unsigned int i = 0x0f0f0f0f; // 1; // 0xf1; // 241 // 4294967295;
 
     // Whate we're printing.
-    printf("Original:  ");
+    printf("Original:");
     // Print i in binary.
     bin_print(i);
     // End line.
-    printf("\n");
+    printf("\t%x\t%u\n", i, i);
 
-    for (int j = 0; j < 40; j++)
+    // 32.
+    int j = sizeof(unsigned int) * 8;
+
+    for (j--; j >= 0; j--)
     {
-        // What the operation is.
-        printf("%3d << %2d: ", i, j);
-        bin_print(i << j);
+        // 1 shifted left j times.
+        bin_print(1 << j);
         printf("\n");
+        // i.
+        bin_print(i);
+        printf("\n");
+        printf("-------------------------------- &\n");
+        // (1 shifted left j times) bitwise logical and i.
+        bin_print((1 << j) & i);
+        printf("\n\n");
     }
 
     // Everything is okay.
