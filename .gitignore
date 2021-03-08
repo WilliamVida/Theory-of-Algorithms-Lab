@@ -1,6 +1,8 @@
 # Local executables
 bitoperations
 funcs
+prepoc
+emptyexec
 
 # Prerequisites
 *.d
