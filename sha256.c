@@ -6,17 +6,17 @@
 #define BYTE uint8_t
 
 // Page 5 of the secure hash standard.
-#define ROTL(x, n) (x << n) | (x >> (32 - n))
-#define ROTR(x, n) (x >> n) | (x << (32 - n))
-#define SHR(x, n) x >> n
+#define ROTL(_x, _n) (_x << _n) | (_x >> ((sizeof(_x) * 8) - _n))
+#define ROTR(_x, _n) (_x >> _n) | (_x << ((sizeof(_x) * 8) - _n))
+#define SHR(_x, _n) _x >> _n
 
 // Pages 10 of the secure hash standard.
-#define CH(x, y, z) (x & y) ^ (~x & z)
-#define MAJ(x, y, z) (x & y) ^ (x & z) ^ (y & z)
-#define SIG0(x) ROTR(x, 2) ^ ROTR(x, 13) ^ ROTR(x, 22)
-#define SIG1(x) ROTR(x, 6) ^ ROTR(x, 11) ^ ROTR(x, 25)
-#define Sig0(x) ROTR(x, 7) ^ ROTR(x, 18) ^ SHR(x, 3)
-#define Sig1(x) ROTR(x, 17) ^ ROTR(x, 19) ^ SHR(x, 10)
+#define CH(_x, _y, _z) (_x & _y) ^ (~_x & _z)
+#define MAJ(_x, _y, _z) (_x & _y) ^ (_x & _z) ^ (_y & _z)
+#define SIG0(_x) ROTR(_x, 2) ^ ROTR(_x, 13) ^ ROTR(_x, 22)
+#define SIG1(_x) ROTR(_x, 6) ^ ROTR(_x, 11) ^ ROTR(_x, 25)
+#define Sig0(_x) ROTR(_x, 7) ^ ROTR(_x, 18) ^ SHR(_x, 3)
+#define Sig1(_x) ROTR(_x, 17) ^ ROTR(_x, 19) ^ SHR(_x, 10)
 
 // SHA256 works on blocks of 512 bits.
 union Block
@@ -57,6 +57,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits)
 
     if (*S == END)
     {
+        // Finish.
         return 0;
     }
     else if (*S == READ)
@@ -71,7 +72,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits)
         if (nobytes == 64)
         {
             // This happens when we can read 64 bytes from f.
-            return 1;
+            // Do nothing.
         }
         else if (nobytes < 56)
         {
@@ -85,7 +86,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits)
                 M->bytes[nobytes] = 0x00; // In bits: 00000000.
             }
 
-            // Append length of original input (CHECK ENDIANESS).
+            // Append nobits as a big endian integer.
             M->sixf[7] = *nobits;
 
             // Say this is the last block.
@@ -116,7 +117,7 @@ int next_block(FILE *f, union Block *M, enum Status *S, uint64_t *nobits)
             M->bytes[nobytes] = 0x00; // In bits: 00000000.
         }
 
-        // Append nobits as an integer. Check ENDIAN!
+        // Append nobits as a big endian integer.
         M->sixf[7] = *nobits;
 
         // Change the status to END.
@@ -178,6 +179,8 @@ int next_hash(union Block *M, WORD H[])
     H[5] = f + H[5];
     H[6] = g + H[6];
     H[7] = h + H[7];
+
+    return 0;
 }
 
 // The function that performs/orchestrates the SHA-256 algorithm on message f.

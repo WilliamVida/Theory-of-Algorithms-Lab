@@ -4,6 +4,7 @@ funcs
 prepoc
 emptyexec
 sha256
+endian
 
 # Prerequisites
 *.d
