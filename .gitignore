@@ -3,6 +3,7 @@ bitoperations
 funcs
 prepoc
 emptyexec
+sha256
 
 # Prerequisites
 *.d
