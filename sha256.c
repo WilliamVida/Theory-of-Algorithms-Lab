@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-// Endianess. Adapted from: https://developer.ibm.com/technologies/systems/articles/au-endianc/.
+// Endianness. Adapted from: https://developer.ibm.com/technologies/systems/articles/au-endianc/.
 #include <byteswap.h>
 const int _i = 1;
 #define islilend() ((*(char *)&_i) != 0)
 
 // Words and bytes.
 #define WORD uint32_t
-#define PF PRIx32
+#define PF PRIX32
 #define BYTE uint8_t
 
 // Page 5 of the secure hash standard.
