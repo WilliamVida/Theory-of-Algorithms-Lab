@@ -8,7 +8,7 @@ const int _i = 1;
 
 // Words and bytes.
 #define WORD uint32_t
-#define PF PRIX32
+#define PF PRIx32
 #define BYTE uint8_t
 
 // Page 5 of the secure hash standard.
